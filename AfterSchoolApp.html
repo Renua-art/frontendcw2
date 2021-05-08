@@ -1,0 +1,432 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vue.js After School App</title>
+    <!--Changed the title of my webpage to 'Vue.js After School App'-->
+    <!-- Import Script to run Vue-->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <!--This is the Vue cdn which I used to run the Vue code in my application-->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Link over here is from font awesome for me to display icons like my cart button icon -->
+    <!-- Latest compiled and minified CSS -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- This is a Bootstrap cdn which I used to run bootstrap -->
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
+    <!-- A CSS used to makesure my work fits into the component very well -->
+
+</head>
+
+<body class="container">
+    <!-- The 'container' is a component class. It helps to space out things when I display the code -->
+
+    <!-- Create the DOM space for vue to run in-->
+    <div id="app">
+        <!-- The 'id = app' is like a link that references the element which the vueinstance in line 156 (el: '#app') is mounted upon if I don't put the 'id=app', my vue wil not render -->
+        <h2 v-text="sitename"></h2>
+        <!-- This is the 'sitename'. I am binding the context of the 'h2' here. The sitename is the data property -->
+        <div class="row">
+            <!-- The 'class' represents a bootstrap or pre-defined CSS class. It's not related to 'vue' -->
+            <div class="p-2 col-md-4 col-lg-3 col-12">
+                <!-- The 'class' represents a bootstrap or pre-defined CSS class. It's not related to 'vue' -->
+                <header>
+
+                    <button v-on:click="showCheckout" v-if="cart.length >= 1"> <!-- The 'v-on:click' statements is made here to indicate that when the button is clicked upon, it should show the check out page. The "showCheckout" is a function. "v-if="cart.length >= 1" indicates that the Checkout button should only show when the length of the cart is reater or equa to one. The 'cart' represents the dat property and it is an array so it's checkin if the length of the array is greater than or equal to one, that is if it has more than one item in the array so if it doen't have more than one item in the array, it would not show. -->
+                        
+                        {{ cartItemCount }}
+
+                        <span class="fa fa-cart-plus"></span> Checkout <!-- This is the 'check out' button --> 
+                    </button>
+                    <!-- This is the cart icon and check out button -->
+                    <br>
+
+                    <div v-if="showProduct == true">
+
+                        Sort By:
+                        <!-- The 'sortby' represents where you have the 'subject', 'location' and 'price' on the left hand side of the webpage -->
+
+                        <div>
+                            <!-- These are div classes -->
+                            <input type="radio" id="subject" value="subject" name="sortBy" v-model="sortBy">
+                            <!-- The 'radio' classes for the 'Sort By' is for sorting based onthe selected model. The 'v-model' is representing the "sortby" data. Whenever the value of the radio button changes, it changes the 'sortby' as it's reactive. -->
+
+                            <label for="subject">Subject</label>
+                            <!-- Whenever you click on 'subject', it changes the 'sortby' value to whatever is in the 'value="subject"' data-->
+                        </div>
+                        <div>
+                            <input type="radio" id="location" value="location" name="sortBy" v-model="sortBy">
+                            <label for="location">Location</label>
+                            <!-- Whenever you click on 'location', it changes the 'sortby' value to whatever is in the 'value="location"' data-->
+                        </div>
+                        <div>
+                            <input type="radio" id="price" value="price" name="sortBy" v-model="sortBy">
+                            <label for="price">Price</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="availability" value="availability" name="sortBy" v-model="sortBy" />
+                            <label for="availability">Availability</label>
+                        </div>
+                        <br> Order By:
+                        <input type="radio" id="orderBy" value="ascending" name="orderBy" v-model="orderBy"> Ascending
+                        <!-- Same thing is applied here, whenever you click on 'Ascending', it changes the 'orderby' value to whatever is in the 'value="ascending" ' data-->
+
+                        <input type="radio" id="orderBy" value="descending" name="orderBy" v-model="orderBy"> Descending
+
+                        <!-- The 'Sortby' and 'Orderby' is what we'll use to sort the products-->
+                    </div>
+                </header>
+            </div>
+
+            <div class="p-2 col-md-8 col-lg-9 col-12">
+                <!-- This is a clas-->
+                <div v-if="showProduct == true">
+                    <!-- This is also a class. Thi product contaier should show if the 'showProduct' is equal to true.  -->
+                    <main class="productContainer">
+                        <!-- This is a clas-->
+
+                        <div class="row">
+                            <!-- This is a clas-->
+
+                            <div class="p-2 m-2 col-lg-3 col-md-4 col-sm-6 col-12" v-for="product in filteredProducts" :key="product._id">
+                                <!-- This is an iteration, we're iterating the 'filtered products'. I'm ierating throuh the products available. The 'filteredproducts' is also used as sort like you get the products and you sort it based on the velue of 'sortby' and 'orderby'.I returns the product that conforms to a specified conditon. The ':key="product._id' is used to bind the product id-->
+                                <div class="p-2">
+                                    <i :class="product.image" style="font-size: 20px;"></i>
+                                    <!--The 'v-bind' is bimding the product. It is a vue bind. The entire image tag, displays the image. It's binding the image. It's a CSS class tomake the image responsives-->
+                                    <!--The 'v-for' is a 'vue for' loop so for every product inside 'filtered products it should be displayed.-->
+                                    <h2 v-text="product.title"></h2>
+                                    <!--Binds the text of the product or title o the 'h2' tag-->
+                                    <p v-html="product.description"></p>
+                                    <!--This is for the product description for if there's any product desription-->
+                                    <!-- The double curly brackets is the shorter version of v-text -->
+                                    <p><b>Subject:</b> {{product.subject}}</p>
+                                    <!--This is for interpolation to display dynamic data from Java Script-->
+                                    <p><b>Location:</b> {{product.location}}</p>
+                                    <p><b>Price:</b> ₦{{product.price}}</p>
+                                    <p><b>Available Spaces:</b> {{product.spaces}}</p>
+                                    <button v-on:click="addToCart(product)" v-show="product.spaces >= 1">Add to Cart</button>
+                                    <!-- This is the 'Add to cart' button. When you click on it it calls the '"addToCart(product)"' function. The 'product' acts as a parameter. Whenever you click 'addto cart' it sends the function to that function. The function now adds the particularr product to the cart-->
+                                </div>
+                                <br>
+
+                            </div>
+                        </div>
+                    </main>
+                </div>
+
+                <div v-else>
+
+                    <!-- Cart Container -->
+                    <main class="productContainer" v-show="checkout == false">
+                        <!--The cart shows when you've not checked out-->
+                        <div v-for="product in cart">
+                            <!--This is for iterating in the cart and not the filtered products again and binding the image for the cart-->
+                            <i :class="product.image" style="font-size: 20px;"></i>
+                            <!--To make it responsive-->
+                            <h2 v-text="product.title"></h2>
+                            <p v-html="product.description"></p>
+                            <!-- The double curly brackets is the shorter version of v-text -->
+                            <p><b>Subject:</b> {{product.subject}}</p>
+                            <p><b>Location:</b> {{product.location}}</p>
+                            <p><b>Price:</b> ₦{{product.price}}</p>
+                            <p><b>Available Spaces:</b> {{product.spaces}}</p>
+                            <!--Here now, it won't show 'removefromcart' or 'availablespaces' again-->
+                            <button v-on:click="removeFromCart(product)">Remove From Cart</button>
+                            <!--This has a 'removeFromCart' button for whenever you remove items from cart-->
+
+                        </div>
+
+                        <form v-on:submit.prevent="alert">
+                            <!--'v-on' means whenever you submit this form prevent it from reloading the page. That is on submit of this form, prevent the page from loading and call the 'alert' function in the methods object inside vue instance. The '.prevent' is an event modiier-->
+                            <h4>Checkout</h4>
+                            <!--To display the 'check out'-->
+                            <div>
+                                <label for="name">Name</label>
+                                <input type="text" id="name" v-model="name" v-on:input="validate">
+                                <small style="color:green;" v-if="errors.name">{{errors.name}}</small>
+                            </div>
+                            <!--This details here are for the form-->
+                            <div>
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" v-model="phone" v-on:input="validate">
+                                <small style="color:green;" v-if="errors.phone">{{errors.phone}}</small>
+                            </div>
+                            <!--This details here are for the phone. 'validate' function helps us to know that the name and phone number are valid when inputted.'v-if' is to disply if there are any errors. 'errors'are objects and 'phone' is object property-->
+                            <button type="submit" v-show="valid == true">Checkout</button>
+                            <!--The 'checkout' button only shows only when we have validated, only when value is true. This is the submit button. It triggers the button to submit-->
+                        </form>
+                    </main>
+                    <!-- Cart Container Ends -->
+
+                    <!-- Checkout Container -->
+                    <main class="productContainer" v-show="checkout == true">
+                        <!--The checkout container shows only when you've checked out-->
+                        <div v-for="product in cart">
+                            <!--Displays for each product inside the cart-->
+                            <figure>
+                                <img v-bind:src="product.image">
+                            </figure>
+                            <h2 v-text="product.title"></h2>
+                            <p v-html="product.description"></p>
+                            <!-- The double curly brackets is the shorter version of v-text -->
+                            <p><b>Subject:</b> {{product.subject}}</p>
+                            <p><b>Location:</b> {{product.location}}</p>
+                            <p><b>Price:</b> ₦{{product.price}}</p>
+
+                        </div>
+                    </main>
+                    <!-- Checkout Container Ends -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // const lessonData = require('./lessons.js');
+        //Instatiate a Vue object and set some values to it
+        var webstore = new Vue({ //where the vue class is instatiated gotten from the vue cdn, if you don't do this nothing will fnction in code.-->
+            // Link Vue to the Div with an id of app
+            el: '#app',
+            data: { //represents the data attributes, the properties of 'vue instance'
+                showProduct: true, // The 'showproduct' is a data property. So if showproduct is 'true',
+                sitename: null,
+                cart: [], //array to store items in shopping cart
+                sortBy: 'subject',
+                orderBy: 'ascending',
+                name: "",
+                phone: "",
+                products: [],
+                valid: false,
+                errors: {
+                    name: null,
+                    phone: null
+                },
+                checkout: false,
+                page: 'index',
+            },
+            methods: { //these are methods. Normally an object has both properties and methods
+                //Add to cart function which will take the product id and store it in cart
+                addToCart: function(product) { //the object can 'add to cart'
+                    // this.cart.forEach(  {
+
+                    // });
+                    this.cart.push({ //the 'method' will push an item onto the array. The 'checkout' button shows only if there's an item on the array. If there's no ite in the array, it won't show
+                        _id: product._id,
+                        subject: product.subject,
+                        location: product.location,
+                        price: product.price,
+                        spaces: 1,
+                        image: product.image
+                    });
+                    product.spaces--
+                },
+                showCheckout: function() { //whenever you click on the 'checkout' button it calls this 'showCheckout' fuction and the 'showcheckout' function manipulates the value of the 'showProduct' so the product shows if 'showProduct is true or false.'Set the showproduct property to false if its true, else, set to true.
+                    this.showProduct = this.showProduct ? false : true; //When you click on 'showcheckout' it sets product to false so the product won't show
+                    this.sitename = this.showProduct == true ? 'Vue.js After School Classes and Activities' : "Shopping Cart" //'this' is a short form for 'if and else' . This is just a tennerary operator. So it shows that if 'his.showProduct == true' it should show 'Vue.js After School Classes and Activities', else it should show 'Shopping Cart'
+                },
+                removeFromCart: function(product) {
+                    productIndex = this.cart.findIndex(function(item) { //find the index of the product that you clicked on.
+                        return item._id == product._id
+                    })
+
+                    if (productIndex > -1) { //if the product is not found, it won't erform any action
+                        this.cart.splice(productIndex, 1) //'cart.splice' removes one element starting from the index of that product
+                    }
+                },
+                validate() { //whenver something is inputed inside the name or phone. Checks if 'name.length' is less than or equals to zero
+                    if (this.name.length <= 0 || this.name == "") {
+                        this.errors.name = "Please enter your name."
+                    } else if (this.phone.length <= 0 || this.phone == "") {
+                        this.errors.phone = "Please enter your phone number." //if you/ve not written anything it will ask you to 'Please enter your phone number' and set it to false, but if you've inputed something, it will set it to 'true'
+                    }
+
+                    this.valid = false
+
+                    if (this.name.length > 0 && this.phone.length > 0) {
+                        this.valid = true
+                    }
+                },
+                async alert() {
+                    //when you complete the form fields and click the check out button
+
+                    // Save order
+                    const order = {
+                        lessons: this.cart
+                    }
+
+                    var myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+                    var requestOptions = {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: JSON.stringify(order),
+                        redirect: 'follow'
+                    };
+                    await fetch("http://renuabackend.herokuapp.com/orders", requestOptions)
+                        .then(response => response.text())
+                        .then(result => console.log(result))
+                        .catch(error => console.log('error', error));
+
+
+                    // Update lesson
+                    this.cart.forEach((item) => {
+                        var myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/json");
+
+                        var raw = JSON.stringify({
+                            "quantity": item.spaces
+                        });
+
+                        var requestOptions = {
+                            method: 'PUT',
+                            headers: myHeaders,
+                            body: raw,
+                            redirect: 'follow'
+                        };
+
+                        fetch(`http://renuabackend.herokuapp.com/lessons/${item._id}`, requestOptions)
+                            .then(response => response.text())
+                            .then(result => console.log(result))
+                            .catch(error => console.log('error', error));
+                    })
+
+                    alert('Checked Out Successfully')
+                    this.checkout = true
+                    this.sitename = "Checkout"
+                }
+
+            },
+
+            computed: { //runs whenever reactive attribute of the data changes
+                //Sends the value of items in the cart array to the checkout button
+                cartItemCount: function() {
+                    return this.cart.length || ''; //'cartitem' returns the 'cartlength' that is the number of items inside the cart
+                },
+                //Makes sure that there are enough items in the inventory. If not we'll disable
+                //the add to cart button.
+                canAddToCart: function() {
+                    return this.product.availableInventory > this.cartItemCount;
+                },
+                filteredProducts: function() { //used for filtering for the 'sortby' or 'orderby' functions
+                    if (this.products) { //this computed property checks if there are products available by what is the value of the 'orderby' property
+                        if (this.orderBy == 'ascending') {
+                            if (this.sortBy == 'subject') { //if you click on 'subject' it changes the values according to the subjects
+                                return this.products.sort(function(a, b) {
+                                    if (a.subject.toLowerCase() < b.subject.toLowerCase()) {
+                                        return -1
+                                    } else if (a.subject.toLowerCase() > b.subject.toLowerCase()) {
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'location') { //if you click on 'location' it changes the values according to the location
+                                return this.products.sort(function(a, b) {
+                                    if (a.location.toLowerCase() < b.location.toLowerCase()) {
+                                        return -1
+                                    } else if (a.location.toLowerCase() > b.location.toLowerCase()) {
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'price') {
+                                return this.products.sort(function(a, b) {
+                                    if (a.price < b.price) {
+                                        return -1
+                                    } else if (a.price > b.price) {
+                                        return 1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'availability') {
+                                if (a.spaces < b.spaces) {
+                                    return -1
+                                } else if (a.spaces > b.spaces) {
+                                    return 1
+                                } else {
+                                    return 0
+                                }
+                            }
+                        } else if (this.orderBy == 'descending') {
+                            if (this.sortBy == 'subject') {
+                                return this.products.sort(function(a, b) {
+                                    if (a.subject.toLowerCase() < b.subject.toLowerCase()) {
+                                        return 1
+                                    } else if (a.subject.toLowerCase() > b.subject.toLowerCase()) {
+                                        return -1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'location') {
+                                return this.products.sort(function(a, b) {
+                                    if (a.location.toLowerCase() < b.location.toLowerCase()) {
+                                        return 1
+                                    } else if (a.location.toLowerCase() > b.location.toLowerCase()) {
+                                        return -1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'price') {
+                                return this.products.sort(function(a, b) {
+                                    if (a.price < b.price) {
+                                        return 1
+                                    } else if (a.price > b.price) {
+                                        return -1
+                                    } else {
+                                        return 0
+                                    }
+                                })
+                            } else if (this.sortBy == 'availability') {
+                                if (a.spaces < b.spaces) {
+                                    return 1
+                                } else if (a.spaces > b.spaces) {
+                                    return -1
+                                } else {
+                                    return 0
+                                }
+                            }
+                        }
+                    }
+                },
+            },
+            async mounted() { //this is a lifecycle hook. Runs whenever you mount the components and sets the sitename to 'Vue.js After School Classes and Activities' and then everything renders
+                this.sitename = 'Vue.js After School Classes and Activities',
+                    this.products = await fetch(`http://renuabackend.herokuapp.com/lessons`, {
+                        method: 'GET',
+                        redirect: 'follow'
+                    })
+                    .then(response => response.json())
+                    .then(data => data)
+                    .catch(error => console.log('error', error))
+            },
+
+
+        });
+    </script>
+    <style>
+        .productContainer {
+            flex-direction: row;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</body>
+
+</html>
