@@ -1,0 +1,124 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+			"uid": "0-5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+			"name": "Coursework 2",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"cfbafdf2-9169-4405-a3fe-eb653f827659",
+				"27a3de74-0255-4fdf-a63b-bbe46fd41356",
+				"0e2a99b0-977e-45be-8035-c472ae2fc7e8",
+				"b929affd-c2a2-4665-8461-cabc98347328"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-05-03T12:56:25.764Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "0e2a99b0-977e-45be-8035-c472ae2fc7e8",
+					"uid": "0-0e2a99b0-977e-45be-8035-c472ae2fc7e8",
+					"name": "POST Order",
+					"url": "https://renuarestapi.herokuapp.com/orders",
+					"description": "",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+					"rawModeData": "{\r\n    \"lessons\": [\r\n        {\r\n            \"subject\": \"Mathematics\",\r\n            \"location\": \"London\",\r\n            \"price\": 5000,\r\n            \"spaces\": 3,\r\n            \"image\": \"fas fa-calculator\"\r\n        },\r\n        {\r\n            \"subject\": \"English Language\",\r\n            \"location\": \"Texas\",\r\n            \"price\": 4500,\r\n            \"spaces\": 2,\r\n            \"image\": \"fas fa-book\"\r\n        }\r\n    ]\r\n}",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "27a3de74-0255-4fdf-a63b-bbe46fd41356",
+					"uid": "0-27a3de74-0255-4fdf-a63b-bbe46fd41356",
+					"name": "GET User",
+					"url": "https://renuarestapi.herokuapp.com/user",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "b929affd-c2a2-4665-8461-cabc98347328",
+					"uid": "0-b929affd-c2a2-4665-8461-cabc98347328",
+					"name": "PUT Lesson",
+					"url": "https://renuarestapi.herokuapp.com/lessons/609056f2bd91122d486eb54c",
+					"description": "Update available lessons after order has been completed.",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [],
+					"method": "PUT",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+					"rawModeData": "{\r\n    \"quantity\": 1\r\n}",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "cfbafdf2-9169-4405-a3fe-eb653f827659",
+					"uid": "0-cfbafdf2-9169-4405-a3fe-eb653f827659",
+					"name": "GET Lessons",
+					"url": "https://renuarestapi.herokuapp.com/lessons",
+					"description": null,
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "5bde5ad9-a33d-4234-9838-f9f99f5d7ccd",
+					"headers": "",
+					"pathVariables": {}
+				}
+			]
+		}
+	]
+}
